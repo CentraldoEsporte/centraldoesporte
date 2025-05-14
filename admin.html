@@ -2,18 +2,39 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Painel Admin - Central do Esporte</title>
+  <meta charset="UTF-8">
+  <title>Admin - Central do Esporte</title>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
 </head>
 <body>
-    <h1>Painel Administrativo</h1>
-    <form>
-        <label>Título da Notícia:</label><br>
-        <input type="text" name="titulo" /><br><br>
-        <label>Conteúdo:</label><br>
-        <textarea name="conteudo" rows="5" cols="50"></textarea><br><br>
-        <button type="submit">Publicar</button>
-    </form>
-    <p><i>Essa versão ainda é manual. No futuro você pode integrar com Firebase ou CMS.</i></p>
+  <h1>Painel Administrativo</h1>
+  <form id="form-noticia">
+    <label>Título:</label><br>
+    <input type="text" id="titulo" required><br><br>
+    <label>Conteúdo:</label><br>
+    <textarea id="conteudo" rows="5" cols="50" required></textarea><br><br>
+    <button type="submit">Publicar Notícia</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('form-noticia');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const titulo = document.getElementById('titulo').value;
+      const conteudo = document.getElementById('conteudo').value;
+      db.collection("noticias").add({
+        titulo,
+        conteudo,
+        data: new Date()
+      }).then(() => {
+        alert("Notícia publicada!");
+        form.reset();
+      }).catch((error) => {
+        alert("Erro ao publicar: " + error);
+      });
+    });
+  </script>
 </body>
 </html>
